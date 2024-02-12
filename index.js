@@ -28,11 +28,28 @@ async function run() {
 
     const database= client.db('restuDb');
     const menuCollection= database.collection('menu')
+    const reviewsCollection=client.db('restuDb').collection('reviews')
+    const cartsCollection=client.db('restuDb').collection('carts')
+
    
     app.get('/menu', async(req,res)=> {
          const result= await menuCollection.find().toArray();
          res.send(result)
     } )
+
+    app.get('/reviews', async(req,res)=> {
+        const result= await reviewsCollection.find().toArray();
+        res.send(result)
+   } )
+
+    // cart collection
+
+      app.post('/carts', async(req,res) =>{
+          const item= req.body;
+          console.log(item)
+           const result= await cartsCollection.insertOne(item);
+           res.send(result)
+      }  )
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
